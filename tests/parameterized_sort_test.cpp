@@ -7,8 +7,31 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <string>
 #include "sort.h"
+#include "benchmark_logger.h"
 
+// inline void printTiming(const std::string& label,
+//     const std::chrono::high_resolution_clock::time_point& start,
+//     const std::chrono::high_resolution_clock::time_point& end) {
+// using namespace std::chrono;
+
+// auto ns = duration_cast<nanoseconds>(end - start).count();
+// auto us = duration_cast<microseconds>(end - start).count();
+// auto ms = duration_cast<milliseconds>(end - start).count();
+
+// std::cout << label << ": " 
+// << ns << " ns | " 
+// << us << " µs | "
+// << ms << " ms\n";
+// }
+
+using chrono_time_point = std::chrono::high_resolution_clock::time_point;
+
+inline void logTiming(const std::string& label, const chrono_time_point& start, const chrono_time_point& end) {
+    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+    BenchmarkLogger::get().log(label, ns);
+}
 
 // Optional wrapper to standardize std::sort interface
 template <typename T>
@@ -76,21 +99,39 @@ protected:
 TEST_P(SortingParameterizedTestInt, SortsSampleCorrectly) {
     std::vector<int> vec = generateSample();
     auto sort = GetParam().func;
+
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (SortsSampleCorrectly)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
 TEST_P(SortingParameterizedTestInt, SortsRandomCorrectly) {
     std::vector<int> vec = generateRandom();
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (SortsRandomCorrectly)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
 TEST_P(SortingParameterizedTestInt, HandlesEmptyVector) {
     std::vector<int> vec;
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (HandlesEmptyVector)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
@@ -98,21 +139,39 @@ TEST_P(SortingParameterizedTestInt, HandlesEmptyVector) {
 TEST_P(SortingParameterizedTestInt, HandlesSingleElement) {
     std::vector<int> vec = {42};
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (HandlesSingleElement)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
 TEST_P(SortingParameterizedTestInt, HandlesAlreadySorted) {
     std::vector<int> vec = {1, 2, 3, 4, 5};
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (HandlesAlreadySorted)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
 TEST_P(SortingParameterizedTestInt, HandlesReverseSorted) {
     std::vector<int> vec = {9, 7, 5, 3, 1};
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (HandlesReverseSorted)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
@@ -141,21 +200,39 @@ INSTANTIATE_TEST_SUITE_P(
 TEST_P(SortingParameterizedTestFloat, SortsSampleCorrectly) {
     std::vector<float> vec = generateSample();
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (SortsSampleCorrectly)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
 TEST_P(SortingParameterizedTestFloat, SortsRandomCorrectly) {
     std::vector<float> vec = generateRandom();
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (SortsRandomCorrectly)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
 TEST_P(SortingParameterizedTestFloat, HandlesEmptyVector) {
     std::vector<float> vec;
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (HandlesEmptyVector)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
@@ -163,21 +240,39 @@ TEST_P(SortingParameterizedTestFloat, HandlesEmptyVector) {
 TEST_P(SortingParameterizedTestFloat, HandlesSingleElement) {
     std::vector<float> vec = {42.2};
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (HandlesSingleElement)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
 TEST_P(SortingParameterizedTestFloat, HandlesAlreadySorted) {
     std::vector<float> vec = {1.2, 2.1, 3.4, 4.7, 5.9};
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (HandlesAlreadySorted)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
 TEST_P(SortingParameterizedTestFloat, HandlesReverseSorted) {
     std::vector<float> vec = {9.34f, 7.1f, 5.044f, 3.3f, 1.201f};
     auto sort = GetParam().func;
+    
+    auto start = std::chrono::high_resolution_clock::now();
     sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(GetParam().name + " (HandlesReverseSorted)", start, end);
+
     EXPECT_TRUE(isSorted(vec));
 }
 
