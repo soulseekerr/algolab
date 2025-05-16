@@ -131,6 +131,7 @@ INSTANTIATE_TEST_SUITE_P(
         NamedSortInt{"MergeSort", algolab::mergeSortAll<int>},
         NamedSortInt{"QuickSort", algolab::quickSortAll<int>},
         NamedSortInt{"SelectionSort", algolab::selectionSort<int>},
+        NamedSortInt{"HeapSort", algolab::heapSort<int>},
         NamedSortInt{"StdSort", stdSortWrapper<int>}
     ),
     NameFromStruct<NamedSortInt>
@@ -190,6 +191,7 @@ INSTANTIATE_TEST_SUITE_P(
         NamedSortFloat{"MergeSort", algolab::mergeSortAll<float>},
         NamedSortFloat{"QuickSort", algolab::quickSortAll<float>},
         NamedSortFloat{"SelectionSort", algolab::selectionSort<float>},
+        NamedSortFloat{"HeapSort", algolab::heapSort<float>},
         NamedSortFloat{"StdSort", stdSortWrapper<float>}
     ),
     NameFromStruct<NamedSortFloat>
