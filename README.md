@@ -45,23 +45,25 @@ Includes reusable test infrastructure, randomized input generation, and Google T
 
 algolab/
 ├── include/
-│   └── sort.h              # All algorithm declarations
+│   └── sort.h    # All algorithm declarations
 ├── src/
-│   └── sort.cpp            # Implementations of each algorithm
+│   └── sort.cpp  # Implementations of each algorithm
 ├── tests/
+|   └── main.cpp
 │   └── bubble_sort_test.cpp            # Bubble Sort with Google Test
 │   └── merge_sort_test.cpp             # Merge Sort with Google Test
 │   └── parameterized_sort_test.cpp     # Parameterized test suite with Google Test
 ├── CMakeLists.txt
 
 
-📋 Example: Benchmark Output (100,000 integers)
+📋 Example: Benchmark Output (50,000 integers)
 
-BubbleSort took 9123.5 ms
-SelectionSort took 5342.8 ms
-MergeSort took 12.6 ms
-QuickSort took 9.4 ms
-StdSort took 7.1 ms
+BubbleSort took 9.31911 s
+SelectionSort took 3.28943 s
+MergeSort took 32.6003 ms
+HeapSort took 12.0048 ms
+QuickSort took 6.65712 ms
+StdSort took 2.0245 ms
 
 
 🚀 Getting Started
@@ -83,7 +85,7 @@ Google Test
 
 📚 Future Ideas
 
-Heap Sort, Insertion Sort, Shell Sort
+Insertion Sort, Shell Sort
 Stability check tests
 Parallelized sort variants
 Memory usage benchmarks
