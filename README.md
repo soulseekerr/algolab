@@ -69,18 +69,18 @@ algolab/
 
 📋 Example: Benchmark Output (SortsRandomCorrectly 50,000 integers)
 
-BubbleSort took 10.1225 s!
-SelectionSort took 3.32788 s
-MergeSort took 32.5168 ms
-HeapSort took 12.3055 ms
-QuickSort took 8.08758 ms
-QuickSort Iterative took 8.05108 ms
-IntroSort took 5.90246 ms
-StdSort took 2.65817 ms
+BubbleSort took 10.1225 s!  
+SelectionSort took 3.32788 s  
+MergeSort took 32.5168 ms  
+HeapSort took 12.3055 ms  
+QuickSort took 8.08758 ms  
+QuickSort Iterative took 8.05108 ms  
+IntroSort took 5.90246 ms  
+StdSort took 2.65817 ms  
 
-Performance Summary
+Performance Summary  
 
-Algorithm	Time	Notes
+Algorithm	Time	Notes  
 std::sort	2.65 ms	✅ Compiler-tuned introsort (with insertion + heap fallback)  
 IntroSort	5.90 ms	🔥 Very close to std::sort, great result!  
 QuickSort	8.08 ms	Solid baseline recursive quicksort  
@@ -91,22 +91,22 @@ SelectionSort	3.33 s	🐌 O(n²), expected
 BubbleSort	10.12 s	🐢 Brutal! Educational only  
 
 
-🔍 Observations
-IntroSort is just ~2× slower than std::sort.
-Recursive and iterative quicksort perform almost identically (as they should).
-std::sort remains fastest, thanks to compiler optimizations, CPU branch prediction, and inlining.
-MergeSort is slower due to heap allocations and poor cache locality, even though it’s O(n log n).
-HeapSort is great in fallback scenarios.
+🔍 Observations  
+IntroSort is just ~2× slower than std::sort.  
+Recursive and iterative quicksort perform almost identically (as they should).  
+std::sort remains fastest, thanks to compiler optimizations, CPU branch prediction, and inlining.  
+MergeSort is slower due to heap allocations and poor cache locality, even though it’s O(n log n).  
+HeapSort is great in fallback scenarios.  
 
 
 🚀 Getting Started
 
-git clone https://github.com/soulseekerr/algolab.git
-cd algolab
-mkdir build && cd build
-cmake ..
-make
-./debug/Debug/algolabtests
+git clone https://github.com/soulseekerr/algolab.git  
+cd algolab  
+mkdir build && cd build  
+cmake ..  
+make  
+./debug/Debug/algolabtests  
 
 
 🧑‍💻 Requirements
