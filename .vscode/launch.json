@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+             
+      {
+        "name": "Debug algolabtests with CMake",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/debug/Debug/bin/algolabtests",
+        "args": [],
+        // "args": ["--gtest_filter=SortingParameterizedTestMtInt.*"], // optional: filter specific test case
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": true,
+        "MIMode": "lldb", // Use lldb instead of gdb
+        "setupCommands": [
+          {
+            "description": "Enable pretty-printing for lldb",
+            "text": "settings set target.prefer-dynamic-value run-target",
+            "ignoreFailures": true
+          }
+        ],
+        "preLaunchTask": "build"
+      },
+    ]
+  }
+  

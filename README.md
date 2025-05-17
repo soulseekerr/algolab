@@ -17,7 +17,18 @@ Includes reusable test infrastructure, randomized input generation, and Google T
   - Selection Sort
   - Merge Sort
   - Quick Sort
+  - Intro Sort (hybrid algorithm to reflect std::sort performance using median of three partitioning)
   - `std::sort` (baseline)
+
+Intro Sort 
+ - Hybrid algorithm to reflect std::sort performance
+ - Optimal for performance and stability in real-world data.
+ - Improves pivot quality and reduces the risk of worst-case behavior.
+ - use of median of three partitioning:
+  - picks the median of first, middle, and last elements as pivot.
+  - great at avoiding bad pivot choices on already sorted / reversed inputs.
+  - often used in std::sort, especially combined with Introsort.
+
 
 - 🔍 **Extensive Test Coverage**
   - Empty vectors
@@ -56,14 +67,16 @@ algolab/
 ├── CMakeLists.txt
 
 
-📋 Example: Benchmark Output (50,000 integers)
+📋 Example: Benchmark Output (SortsRandomCorrectly 50,000 integers)
 
-BubbleSort took 9.31911 s
-SelectionSort took 3.28943 s
-MergeSort took 32.6003 ms
-HeapSort took 12.0048 ms
-QuickSort took 6.65712 ms
-StdSort took 2.0245 ms
+BubbleSort took 10.1225 s!
+SelectionSort took 3.32788 s
+MergeSort took 32.5168 ms
+HeapSort took 12.3055 ms
+QuickSort took 8.08758 ms
+QuickSort Iterative took 8.05108 ms
+IntroSort took 5.90246 ms
+StdSort took 2.65817 ms
 
 
 🚀 Getting Started

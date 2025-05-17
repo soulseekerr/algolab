@@ -24,7 +24,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU|AppleClang")
     set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=modernize-*,-warnings-as-errors=*")
 endif()
 
-set(SOURCES sort.cpp)
+set(SOURCES sort.cpp sort_iterative.cpp introsort.cpp)
 
 add_library(libfmt SHARED IMPORTED)
 add_library(${MY_LIB_NAME} SHARED ${SOURCES})
