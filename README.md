@@ -54,17 +54,17 @@ Intro Sort
 
 ## 🛠 Project Structure
 
-algolab/
-├── include/
-│   └── sort.h    # All algorithm declarations
-├── src/
-│   └── sort.cpp  # Implementations of each algorithm
-├── tests/
-|   └── main.cpp
-│   └── bubble_sort_test.cpp            # Bubble Sort with Google Test
-│   └── merge_sort_test.cpp             # Merge Sort with Google Test
-│   └── parameterized_sort_test.cpp     # Parameterized test suite with Google Test
-├── CMakeLists.txt
+algolab/  
+├── include/  
+│   └── sort.h    # All algorithm declarations  
+├── src/  
+│   └── sort.cpp  # Implementations of each algorithm  
+├── tests/  
+|   └── main.cpp  
+│   └── bubble_sort_test.cpp            # Bubble Sort with Google Test  
+│   └── merge_sort_test.cpp             # Merge Sort with Google Test  
+│   └── parameterized_sort_test.cpp     # Parameterized test suite with Google Test  
+├── CMakeLists.txt  
 
 
 📋 Example: Benchmark Output (SortsRandomCorrectly 50,000 integers)
@@ -81,14 +81,14 @@ StdSort took 2.65817 ms
 Performance Summary
 
 Algorithm	Time	Notes
-std::sort	2.65 ms	✅ Compiler-tuned introsort (with insertion + heap fallback)
-IntroSort	5.90 ms	🔥 Very close to std::sort, great result!
-QuickSort	8.08 ms	Solid baseline recursive quicksort
-QuickSort Iterative	8.05 ms	Equivalent performance, more stack-friendly
-HeapSort	12.30 ms	Good for worst-case, but slower due to heap overhead
-MergeSort	32.51 ms	Stable but heavier memory usage and cache penalties
-SelectionSort	3.33 s	🐌 O(n²), expected
-BubbleSort	10.12 s	🐢 Brutal! Educational only
+std::sort	2.65 ms	✅ Compiler-tuned introsort (with insertion + heap fallback)  
+IntroSort	5.90 ms	🔥 Very close to std::sort, great result!  
+QuickSort	8.08 ms	Solid baseline recursive quicksort  
+QuickSort Iterative	8.05 ms	Equivalent performance, more stack-friendly  
+HeapSort	12.30 ms	Good for worst-case, but slower due to heap overhead  
+MergeSort	32.51 ms	Stable but heavier memory usage and cache penalties  
+SelectionSort	3.33 s	🐌 O(n²), expected  
+BubbleSort	10.12 s	🐢 Brutal! Educational only  
 
 
 🔍 Observations
