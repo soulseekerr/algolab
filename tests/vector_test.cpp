@@ -10,6 +10,9 @@ struct Person {
     std::string name;
     int age;
 
+    // For further use below, add default ctor
+    Person() : name(""), age(0) {}
+
     Person(std::string n, int a) : name(std::move(n)), age(a) {}
     bool operator==(const Person& other) const {
         return name == other.name && age == other.age;
@@ -63,6 +66,25 @@ TEST(VectorTest, AverageAndMedian) {
 
     v.push_back(4.0);
     EXPECT_DOUBLE_EQ(v.median(), 2.5);
+}
+
+TEST(VectorTest, EmplaceBackWithPerson) {
+    algolab::Vector<Person> people;
+    
+    // Test emplace_back
+    people.emplace_back("Alice", 30);
+    people.emplace_back("Bob", 45);
+
+    EXPECT_EQ(people.size(), 2);
+    EXPECT_EQ(people[0].name, "Alice");
+    EXPECT_EQ(people[1].age, 45);
+
+    // Test push_back with move
+    Person p("Charlie", 50);
+    people.push_back(std::move(p));
+
+    EXPECT_EQ(people.size(), 3);
+    EXPECT_EQ(people[2].name, "Charlie");
 }
 
 TEST(VectorBenchmark, CompareWithStdVector) {
@@ -135,6 +157,9 @@ TEST(MemoryFootprintTest, CompareVectorMemoryUsage) {
     }
     auto end_custom = std::chrono::high_resolution_clock::now();
     auto dur_custom = std::chrono::duration<double, std::milli>(end_custom - start_custom).count();
+
+    std::cout << "Memory Footprint Test:\n";
+    std::cout << "Vector Int size = " << stdVec.size() << " elements\n";
 
     std::cout << "std::vector time: " << dur_std << " ms\n";
     std::cout << "algolab::Vector time: " << dur_custom << " ms\n";
