@@ -93,6 +93,7 @@ algolab/
 │   └── sort_iterative.h  # All sorting iterative algorithm declarations  
 │   └── introsort.h       # Introspective Sort algorithm declaration  
 │   └── hashset.h         # HashSet custom implementation  
+│   └── vector.h          # Vector custom implementation  
 ├── src/  
 │   └── sort.cpp  # Implementations of each algorithm  
 ├── tests/  
@@ -101,6 +102,7 @@ algolab/
 │   └── merge_sort_test.cpp             # Merge Sort with Google Test  
 │   └── parameterized_sort_test.cpp     # Parameterized test suite with Google Test  
 │   └── hashset_test.cpp                # Custom HashSet vs STL unordered set with Google Test  
+│   └── vector_test.cpp                 # Custom Vector vs STL vector with Google Test  
 │   └── benchmark_logger.h              # Class for time output  
 ├── CMakeLists.txt  
 
