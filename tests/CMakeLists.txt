@@ -34,7 +34,7 @@ include_directories((BEFORE "../algolab"))
 
 add_library(libfmt SHARED IMPORTED)
 
-set(SOURCES_TEST main.cpp merge_sort_test.cpp bubble_sort_test.cpp parameterized_sort_test.cpp)
+set(SOURCES_TEST main.cpp merge_sort_test.cpp bubble_sort_test.cpp parameterized_sort_test.cpp hashset_test.cpp)
 
 find_package(fmt)
 

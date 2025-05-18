@@ -64,22 +64,19 @@ struct Node_t {
  */
 template <typename T, typename Hash = ThomasWangHash, typename KeyEqual = std::equal_to<T> >
 class HashSet {
-    static_assert(std::is_integral<T>::value, "ThomasWangHash only supports integral keys.");
-
 private:
-    uint64_t bucketCount;
-    uint64_t elementCount;
-    double loadFactor; // Load factor variable
+    uint64_t bucketCount_;
+    uint64_t elementCount_;
+    double loadFactor_; // Load factor variable
 
     mutable std::shared_mutex mutex_; // Mutex for thread safety
 
-    // std::unique_ptr<std::unique_ptr<Node_t<T>>[]> buckets;
-    std::vector<std::unique_ptr<Node_t<T>>> buckets;
+    std::vector<std::unique_ptr<Node_t<T>>> buckets_;
 
     // Static constexpr default load factor
-    static constexpr double defaultLoadFactor = 0.7;
+    static constexpr double DEFAULT_LOAD_FACTOR = 0.7;
 
-    static constexpr std::array<uint64_t, 33> primeSizes {
+    static constexpr std::array<uint64_t, 33> PRIME_SIZES {
         11ULL, 23ULL, 47ULL, 97ULL, 199ULL, 409ULL, 823ULL, 1741ULL, 3469ULL, 6949ULL, 14033ULL,
         28067ULL, 56103ULL, 112213ULL, 224467ULL, 448949ULL, 897919ULL, 1795847ULL,
         3591703ULL, 7183417ULL, 14366889ULL, 28733777ULL, 57467521ULL, 114935069ULL,
@@ -87,17 +84,18 @@ private:
         7355845867ULL, 14711691733ULL, 29423383469ULL, 58846766941ULL
     }; // Example primes
 
-    int currentPrimeIndex;
+    //  Used to track the current prime index
+    int currentPrimeIndex_;
 
     Hash hasher;
     KeyEqual keyEqual;
 
 public:
-    explicit HashSet(float p_loadFactor = defaultLoadFactor) 
-        : elementCount(0), currentPrimeIndex(0) {
-        loadFactor = p_loadFactor;
-        bucketCount = primeSizes[currentPrimeIndex];
-        buckets.resize(bucketCount);
+    explicit HashSet(float p_loadFactor = DEFAULT_LOAD_FACTOR) 
+        : elementCount_(0), currentPrimeIndex_(0) {
+        loadFactor_ = p_loadFactor;
+        bucketCount_ = PRIME_SIZES[currentPrimeIndex_];
+        buckets_.resize(bucketCount_);
     }
 
     virtual ~HashSet() = default;
@@ -106,29 +104,34 @@ public:
     bool insert(const T& key) {
         std::unique_lock lock(mutex_);
     
-        if (elementCount > bucketCount * loadFactor) {
+        if (elementCount_ > bucketCount_ * loadFactor_) {
             resize();
         }
 
         const uint64_t hashValue = getHash(key);
-        for (Node_t<T>* node = buckets[hashValue].get(); node; node = node->next.get()) {
-            if (keyEqual(node->key, key)) return false;
+        // Check if the key already exists
+        for (Node_t<T>* node = buckets_[hashValue].get(); node; node = node->next.get()) {
+            if (keyEqual(node->key, key)) {
+                DEBUG_LOG(std::format("Key: {} already exists at bucket: {}", key, hashValue));
+                return false; // Key already exists
+            }
         }
 
+        // If the key does not exist, create a new node and insert it
         auto newNode = std::make_unique<Node_t<T>>(key);
-        newNode->next = std::move(buckets[hashValue]);
-        buckets[hashValue] = std::move(newNode);
-        ++elementCount;
+        newNode->next = std::move(buckets_[hashValue]);
+        buckets_[hashValue] = std::move(newNode);
+        ++elementCount_;
         DEBUG_LOG(std::format("Inserted key: {} at bucket: {}", key, hashValue));
         return true;
     }
 
-    // // Search Key
+    // Search Key
     bool search(const T& key) const {
         std::shared_lock lock(mutex_);
 
         uint64_t hashValue = getHash(key);
-        Node_t<T>* current = buckets[hashValue].get();
+        Node_t<T>* current = buckets_[hashValue].get();
         
         while (current != nullptr) {
             if (keyEqual(current->key, key)) {
@@ -148,18 +151,18 @@ public:
         std::unique_lock lock(mutex_);
 
         uint64_t hashValue = getHash(key);
-        Node_t<T>* current = buckets[hashValue].get();
+        Node_t<T>* current = buckets_[hashValue].get();
         Node_t<T>* prev = nullptr;
     
         while (current != nullptr) {
             if (keyEqual(current->key, key)) {
                 if (prev == nullptr) {
-                    buckets[hashValue] = std::move(current->next);
+                    buckets_[hashValue] = std::move(current->next);
                 } else {
                     prev->next = std::move(current->next);
                 }
                 DEBUG_LOG(std::format("Removed key: {} from bucket: {}", key, hashValue));
-                --elementCount;
+                --elementCount_;
                 return true;
             }
             prev = current;
@@ -172,22 +175,22 @@ public:
     void clear() {
         std::unique_lock lock(mutex_);
 
-        for (auto& bucket : buckets) {
+        for (auto& bucket : buckets_) {
             bucket.reset();
         }
-        elementCount = 0;
-        currentPrimeIndex = 0;
-        bucketCount = primeSizes[currentPrimeIndex];
-        buckets.resize(bucketCount);
+        elementCount_ = 0;
+        currentPrimeIndex_ = 0;
+        bucketCount_ = PRIME_SIZES[currentPrimeIndex_];
+        buckets_.resize(bucketCount_);
     }
 
     void display() const {
         std::shared_lock lock(mutex_);
 
         std::cout << "HashSet contents:" << std::endl;
-        for (uint64_t i = 0; i < bucketCount; ++i) {
+        for (uint64_t i = 0; i < bucketCount_; ++i) {
             std::cout << "Bucket " << i << ": ";
-            Node_t<T>* current = buckets[i].get();
+            Node_t<T>* current = buckets_[i].get();
             while (current != nullptr) {
                 std::cout << current->key << " -> ";
                 current = current->next.get();
@@ -198,25 +201,25 @@ public:
 
     std::size_t size() const { 
         std::shared_lock lock(mutex_);
-        return elementCount; 
+        return elementCount_; 
     }
 
     std::size_t capacity() const { 
         std::shared_lock lock(mutex_);
-        return bucketCount; 
+        return bucketCount_; 
     }
 
     double load_factor() const {
         std::shared_lock lock(mutex_);
 
-        return static_cast<double>(elementCount) / bucketCount;
+        return static_cast<double>(elementCount_) / bucketCount_;
     }
 
     template<typename Callback>
     void forEach(Callback&& cb) const {
         std::shared_lock lock(mutex_);
 
-        for (const auto& bucket : buckets) {
+        for (const auto& bucket : buckets_) {
             for (Node_t<T>* node = bucket.get(); node; node = node->next.get()) {
                 cb(node->key);
             }
@@ -226,29 +229,29 @@ public:
 private:
     // Get hash value for a key
     uint64_t getHash(const T& key) const {
-        return hasher(key) % bucketCount;
+        return hasher(key) % bucketCount_;
     }
 
     // Resize function to move to the next prime size
     void resize() {
-        if (currentPrimeIndex + 1 >= primeSizes.size()) return; // No more primes available
+        if (currentPrimeIndex_ + 1 >= PRIME_SIZES.size()) return; // No more primes available
 
-        auto oldBucketCount = bucketCount;
-        bucketCount = primeSizes[++currentPrimeIndex];
+        auto oldBucketCount = bucketCount_;
+        bucketCount_ = PRIME_SIZES[++currentPrimeIndex_];
 
-        std::vector<std::unique_ptr<Node_t<T>>> newBuckets(bucketCount);
+        std::vector<std::unique_ptr<Node_t<T>>> newBuckets(bucketCount_);
 
         for (size_t i = 0; i < oldBucketCount; ++i) {
-            Node_t<T>* current = buckets[i].get();
+            Node_t<T>* current = buckets_[i].get();
             while (current) {
-                uint64_t newHashValue = hasher(current->key) % bucketCount;
+                uint64_t newHashValue = hasher(current->key) % bucketCount_;
                 auto newNode = std::make_unique<Node_t<T>>(current->key);
                 newNode->next = std::move(newBuckets[newHashValue]);
                 newBuckets[newHashValue] = std::move(newNode);
                 current = current->next.get();
             }
         }
-        buckets = std::move(newBuckets);
+        buckets_ = std::move(newBuckets);
     }
 };
 
