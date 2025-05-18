@@ -12,7 +12,9 @@ Includes reusable test infrastructure, randomized input generation, and Google T
 
 ## 📦 Features
 
-- **Custom HashSet Implementation**  
+- **Custom HashSet Implementation**
+  
+- **Custom Vector Implementation**  
   
 - **Sorting Algorithms**
   - Bubble Sort
@@ -65,6 +67,20 @@ Features
 - Thread-Safe: insert, search, remove protected via shared/exclusive locks  
 - Benchmark Tests: Compare against STL's unordered_set with MarketQuote objects
 
+**Custom Vector<T> Implementation**  
+A lightweight alternative to std::vector with additional flexibility and control over memory growth strategy.
+
+Features:
+- Custom growth strategy: DEFAULT_CAPACITY_METHOD (doubling) or LOG_CAPACITY_METHOD (slower growth)  
+- Manual memory management with support for:  
+  push_back (copy & move)  
+  emplace_back (in-place construction)  
+  at, front, back, erase, clear, shrink_to_fit  
+  average() and median() utilities (for numeric types)  
+- Copy and move constructors / assignment support  
+- Thread-safe concurrent access supported in test via external locking (e.g. std::shared_mutex)  
+- Memory usage estimator via memory_usage_bytes()  
+- Benchmarked against std::vector  
 
 ---
 
@@ -102,6 +118,10 @@ HeapSort	12.30 ms	Good for worst-case, but slower due to heap overhead
 MergeSort	32.51 ms	Stable but heavier memory usage and cache penalties  
 SelectionSort	3.33 s	🐌 O(n²), expected  
 BubbleSort	10.12 s	🐢 Brutal! Educational only  
+
+Benchmark of 1 million integers:  
+std::vector   time:   ~14.25 ms  
+algolab::Vector time: ~5.25 ms  
 
 
 🔍 Observations  
