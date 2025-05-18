@@ -12,9 +12,9 @@ Includes reusable test infrastructure, randomized input generation, and Google T
 
 ## 📦 Features
 
-- Custom HashSet Implementation  
+- **Custom HashSet Implementation**  
   
-- 🧠 **Algorithms Included**
+- **Algorithms Included**
   - Bubble Sort
   - Selection Sort
   - Merge Sort
