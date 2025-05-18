@@ -289,6 +289,19 @@ TEST_P(SortingParameterizedTestFloat, HandlesReverseSorted) {
     EXPECT_TRUE(isSorted(vec));
 }
 
+TEST_P(SortingParameterizedTestString, SortsSampleCorrectly) {
+    std::vector<std::string> vec = generateSample();
+    auto sort = GetParam().func;
+
+    auto start = std::chrono::high_resolution_clock::now();
+    sort(vec);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    logTiming(std::format("{} (SortsSampleCorrectly) {} items", GetParam().name, vec.size()), start, end);
+
+    EXPECT_TRUE(isSorted(vec));
+}
+
 // ---- Instantiation ---- //
 
 template<typename NamedSortType>
