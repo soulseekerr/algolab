@@ -1,6 +1,6 @@
 # 🧪 algolab
 
-A modern C++ playground to implement, test, and benchmark classic sorting algorithms.  
+A modern C++ playground to implement, test, and benchmark classic sorting algorithms and containers.  
 Designed for performance experiments, algorithm comparison, and clean test-driven development.
 Includes reusable test infrastructure, randomized input generation, and Google Test integration.
 
@@ -12,6 +12,8 @@ Includes reusable test infrastructure, randomized input generation, and Google T
 
 ## 📦 Features
 
+- Custom HashSet Implementation  
+  
 - 🧠 **Algorithms Included**
   - Bubble Sort
   - Selection Sort
@@ -20,7 +22,7 @@ Includes reusable test infrastructure, randomized input generation, and Google T
   - Intro Sort (hybrid algorithm to reflect std::sort performance using median of three partitioning)
   - `std::sort` (baseline)
 
-Intro Sort 
+**Intro Sort**  
  - Hybrid algorithm to reflect std::sort performance
  - Optimal for performance and stability in real-world data.
  - Improves pivot quality and reduces the risk of worst-case behavior.
@@ -29,6 +31,19 @@ Intro Sort
   - great at avoiding bad pivot choices on already sorted / reversed inputs.
   - often used in std::sort, especially combined with Introsort.
 
+**Custom HashSet Implementation**  
+A thread-safe HashSet<T> implementation in Modern C++ with support for:  
+- Custom hash functions (default: Thomas Wang’s 64-bit hash)  
+- Dynamic resizing using prime number growth strategy  
+- Collision resolution using separate chaining (linked list)  
+- Thread-safety using std::shared_mutex (readers/writer lock)  
+- Performance benchmark vs std::unordered_set  
+
+Features
+- Templated API: Works with any type (default requires T to be integral unless custom hash provided)  
+- Resize Strategy: Uses increasing primes to reduce clustering  
+- Thread-Safe: insert, search, remove protected via shared/exclusive locks  
+- Benchmark Tests: Compare against STL's unordered_set with MarketQuote objects  
 
 - 🔍 **Extensive Test Coverage**
   - Empty vectors
@@ -69,15 +84,6 @@ algolab/
 
 📋 Example: Benchmark Output (SortsRandomCorrectly 50,000 integers)
 
-BubbleSort took 10.1225 s!  
-SelectionSort took 3.32788 s  
-MergeSort took 32.5168 ms  
-HeapSort took 12.3055 ms  
-QuickSort took 8.08758 ms  
-QuickSort Iterative took 8.05108 ms  
-IntroSort took 5.90246 ms  
-StdSort took 2.65817 ms  
-
 Performance Summary  
 
 Algorithm	Time	Notes  
@@ -111,9 +117,9 @@ make
 
 🧑‍💻 Requirements
 
-C++20
-CMake 3.16+
-Google Test
+C++20  
+CMake 3.16+  
+Google Test  
 
 
 📚 Future Ideas
