@@ -14,7 +14,7 @@ Includes reusable test infrastructure, randomized input generation, and Google T
 
 - **Custom HashSet Implementation**  
   
-- **Algorithms Included**
+- **Sorting Algorithms**
   - Bubble Sort
   - Selection Sort
   - Merge Sort
@@ -29,21 +29,7 @@ Includes reusable test infrastructure, randomized input generation, and Google T
  - use of median of three partitioning:
   - picks the median of first, middle, and last elements as pivot.
   - great at avoiding bad pivot choices on already sorted / reversed inputs.
-  - often used in std::sort, especially combined with Introsort.
-
-**Custom HashSet Implementation**  
-A thread-safe HashSet<T> implementation in Modern C++ with support for:  
-- Custom hash functions (default: Thomas Wang’s 64-bit hash)  
-- Dynamic resizing using prime number growth strategy  
-- Collision resolution using separate chaining (linked list)  
-- Thread-safety using std::shared_mutex (readers/writer lock)  
-- Performance benchmark vs std::unordered_set  
-
-Features
-- Templated API: Works with any type (default requires T to be integral unless custom hash provided)  
-- Resize Strategy: Uses increasing primes to reduce clustering  
-- Thread-Safe: insert, search, remove protected via shared/exclusive locks  
-- Benchmark Tests: Compare against STL's unordered_set with MarketQuote objects  
+  - often used in std::sort, especially combined with Introsort. 
 
 - 🔍 **Extensive Test Coverage**
   - Empty vectors
@@ -65,13 +51,32 @@ Features
   - Optional `DISABLED_` benchmark tests for performance measurement
   - Clean microbenchmark format using `<chrono>`
 
+**Custom HashSet Implementation**  
+A thread-safe HashSet<T> implementation in Modern C++ with support for:  
+- Custom hash functions (default: Thomas Wang’s 64-bit hash)  
+- Dynamic resizing using prime number growth strategy  
+- Collision resolution using separate chaining (linked list)  
+- Thread-safety using std::shared_mutex (readers/writer lock)  
+- Performance benchmark vs std::unordered_set  
+
+Features
+- Templated API: Works with any type (default requires T to be integral unless custom hash provided)  
+- Resize Strategy: Uses increasing primes to reduce clustering  
+- Thread-Safe: insert, search, remove protected via shared/exclusive locks  
+- Benchmark Tests: Compare against STL's unordered_set with MarketQuote objects
+
+
 ---
 
 ## 🛠 Project Structure
 
 algolab/  
 ├── include/  
-│   └── sort.h    # All algorithm declarations  
+│   └── utils.h  
+│   └── sort.h            # All sorting algorithm declarations  
+│   └── sort_iterative.h  # All sorting iterative algorithm declarations  
+│   └── introsort.h       # Introspective Sort algorithm declaration  
+│   └── hashset.h         # HashSet custom implementation  
 ├── src/  
 │   └── sort.cpp  # Implementations of each algorithm  
 ├── tests/  
@@ -79,6 +84,8 @@ algolab/
 │   └── bubble_sort_test.cpp            # Bubble Sort with Google Test  
 │   └── merge_sort_test.cpp             # Merge Sort with Google Test  
 │   └── parameterized_sort_test.cpp     # Parameterized test suite with Google Test  
+│   └── hashset_test.cpp                # Custom HashSet vs STL unordered set with Google Test  
+│   └── benchmark_logger.h              # Class for time output  
 ├── CMakeLists.txt  
 
 
